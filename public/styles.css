@@ -1,0 +1,67 @@
+/* Center the instructions */
+.instructions {
+  text-align: justify;
+  font-size: 1.2em;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+/* Style the question images */
+.question-img {
+  width: 40%;
+  height: auto;
+  margin-right: 10px;
+}
+
+/* Style the question areas */
+.question {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: center;
+  margin-left: 5%;
+}
+
+.question-box {
+  width: 40%;
+}
+
+/* Style the buttons */
+.question button {
+  width: 50px;
+  height: 50px;
+}
+
+/* Style the submit button */
+.submit-button {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5em;
+  width: 20%;
+  height: 50px;
+}
+
+/* Style the container */
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* Style the banner */
+.banner {
+  background-color: cyan;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+}
+/* Style the spacing div */
+.spacing {
+  height: 50px;
+}
+/* Style the button glow */
+button:active {
+  box-shadow: 0 0 30px #00ff00;
+}

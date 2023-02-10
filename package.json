@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "libsvm-js": "^0.2.1",
+    "ml-svm": "^2.1.2"
+  }
+}

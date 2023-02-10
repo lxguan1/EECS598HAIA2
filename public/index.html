@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Questionnaire</title>
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+</head>
+<body>
+  <div class="text-center">
+    <h1>Image Labeling Task</h1>
+  </div>
+  <div class="container">
+    <div class="instructions justify-text">
+      This is a study regarding the annotation of 2D images. In this task:
+      <ul>
+        <li> You will be presented a total of 5 images, each one paired with a question. </li>
+        <li> The questions are yes or no questions, and can be answered by selecting the appropriate button. </li>
+        <li> Press the 'submit' button after you have carefully completed all of the questions to receive an unique code you can enter into the MTurk survey to get compensation. </li>
+      </ul>
+    </div>
+  
+    <div class="question" id="question1">
+      <img src="question1.png" alt="Question 1" class="img-fluid question-img" id="question1-img">
+      <div class = "question-box">
+        <p>Question 1</p>
+        <button class="btn btn-success yesno" id="question1-yes">Yes</button>
+        <button class="btn btn-danger yesno" id="question1-no">No</button>
+      </div>
+    </div>
+    <div class="spacing"></div>
+    <div class="question" id="question2">
+      <img src="question2.png" alt="Question 2" class="img-fluid question-img" id="question2-img">
+      <div class = "question-box">
+        <p>Question 2</p>
+        <button class="btn btn-success yesno" id="question2-yes">Yes</button>
+        <button class="btn btn-danger yesno" id="question2-no">No</button>
+      </div>
+    </div>
+    <div class="spacing"></div>
+    <div class="question" id="question3">
+        <img src="question3.png" alt="Question 3" class="img-fluid question-img" id="question3-img">
+        <div class = "question-box">
+          <p>Question 3</p>
+          <button class="btn btn-success yesno" id="question3-yes">Yes</button>
+          <button class="btn btn-danger yesno" id="question3-no">No</button>
+        </div>
+      </div>
+      <div class="spacing"></div>
+      <div class="question" id="question4">
+        <img src="question4.png" alt="Question 4" class="img-fluid question-img" id="question4-img">
+        <div class = "question-box">
+          <p>Question 4</p>
+          <button class="btn btn-success yesno" id="question4-yes">Yes</button>
+          <button class="btn btn-danger yesno" id="question4-no">No</button>
+        </div>
+      </div>
+      <div class="spacing"></div>
+      <div class="question" id="question5">
+        <img src="question5.png" alt="Question 5" class="img-fluid question-img" id="question5-img">
+        <div class = "question-box">
+          <p>Question 5</p>
+          <button class="btn btn-success yesno" id="question5-yes">Yes</button>
+          <button class="btn btn-danger yesno" id="question5-no">No</button>
+        </div>
+      </div>
+    </div>
+    <div class="spacing"></div>
+    <div class="banner">
+      <button class="btn btn-primary submit-button" id="submit">Submit</button>
+    </div class = "question-box">
+    <script src="script.js" type="module"></script>
+  </body>
+  </html>
+  
