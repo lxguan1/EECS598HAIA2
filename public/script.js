@@ -16,7 +16,7 @@
 // Make the survey code on the MTurk project
 // Make the Qualification Test
 // Make the video demo
-import { svmjs  } from "https://lxguan1.github.io/EECS598HAIA2/public/svm.js";
+import { SVM  } from "https://lxguan1.github.io/EECS598HAIA2/public/svm.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
 import { getStorage, ref as ref_storage, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-storage.js";
@@ -112,7 +112,7 @@ $(document).ready(function() {
         }
 
 
-        svm = new svmjs.SVM();
+        svm = new SVM();
         data = [[0,0], [0,1], [1,0], [1,1]];
         labels = [-1, 1, 1, -1];
         svm.train(data, labels, { kernel: 'rbf', rbfsigma: 0.5 });
