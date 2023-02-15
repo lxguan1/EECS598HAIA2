@@ -16,8 +16,9 @@
     <div class="instructions justify-text">
       This is a study regarding the annotation of 2D images. In this task:
       <ul>
-        <li> You will be presented a total of 5 images, each one paired with a question. </li>
+        <li> You will be presented a total of 5 images, each one paired with a machine label and a question. </li>
         <li> The questions are yes or no questions, and can be answered by selecting the appropriate button. </li>
+        <li> The machine label is a reference for you, it is not necessarily always accurate</li>
         <li> Press the 'submit' button after you have carefully completed all of the questions to receive an unique code you can enter into the MTurk survey to get compensation. </li>
       </ul>
     </div>
@@ -25,7 +26,8 @@
     <div class="question" id="question1">
       <img src="question1.png" alt="Question 1" class="img-fluid question-img" id="question1-img">
       <div class = "question-box">
-        <p>Question 1</p>
+        <p id="question1q">Question 1</p>
+        <p id="question1mr"></p>
         <button class="btn btn-success yesno" id="question1-yes">Yes</button>
         <button class="btn btn-danger yesno" id="question1-no">No</button>
       </div>
@@ -34,7 +36,8 @@
     <div class="question" id="question2">
       <img src="question2.png" alt="Question 2" class="img-fluid question-img" id="question2-img">
       <div class = "question-box">
-        <p>Question 2</p>
+        <p id="question2q">Question 2</p>
+        <p id="question2mr"></p>
         <button class="btn btn-success yesno" id="question2-yes">Yes</button>
         <button class="btn btn-danger yesno" id="question2-no">No</button>
       </div>
@@ -43,7 +46,8 @@
     <div class="question" id="question3">
         <img src="question3.png" alt="Question 3" class="img-fluid question-img" id="question3-img">
         <div class = "question-box">
-          <p>Question 3</p>
+          <p id="question3q">Question 3</p>
+          <p id="question3mr"></p>
           <button class="btn btn-success yesno" id="question3-yes">Yes</button>
           <button class="btn btn-danger yesno" id="question3-no">No</button>
         </div>
@@ -52,7 +56,8 @@
       <div class="question" id="question4">
         <img src="question4.png" alt="Question 4" class="img-fluid question-img" id="question4-img">
         <div class = "question-box">
-          <p>Question 4</p>
+          <p id="question4q">Question 4</p>
+          <p id="question4mr"></p>
           <button class="btn btn-success yesno" id="question4-yes">Yes</button>
           <button class="btn btn-danger yesno" id="question4-no">No</button>
         </div>
@@ -61,7 +66,8 @@
       <div class="question" id="question5">
         <img src="question5.png" alt="Question 5" class="img-fluid question-img" id="question5-img">
         <div class = "question-box">
-          <p>Question 5</p>
+          <p id="question5q">Question 5</p>
+          <p id="question5mr"></p>
           <button class="btn btn-success yesno" id="question5-yes">Yes</button>
           <button class="btn btn-danger yesno" id="question5-no">No</button>
         </div>

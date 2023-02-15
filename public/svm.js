@@ -93,8 +93,8 @@ var svmjs = (function(exports){
               var Ej= this.marginOne(data[j]) - labels[j];
               
               // calculate L and H bounds for j to ensure we're in [0 C]x[0 C] box
-              ai= this.alpha[i];
-              aj= this.alpha[j];
+              let ai= this.alpha[i];
+              let aj= this.alpha[j];
               var L = 0; var H = C;
               if(labels[i] === labels[j]) {
                 L = Math.max(0, ai+aj-C);
@@ -273,7 +273,7 @@ var svmjs = (function(exports){
           return {};
         }
   
-        json = {}
+        let json = {}
         json.N = this.N;
         json.D = this.D;
         json.b = this.b;

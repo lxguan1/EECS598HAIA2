@@ -50,10 +50,13 @@ const firebaseConfig = {
 
 var currentButtons = {};
 var questions;
+var svm;
+var training_data = [];
 var question_statistics;
 var jsonData1;
 var orig_data;
 var answered_questions = ["", "", "", "", ""];
+var machine_answers = [];
 var json_indices = [];
 var abort = false;
 var retval;
@@ -77,13 +80,21 @@ $(document).ready(function() {
         } else {
           console.log("No data available");
         }
-
+        //Load in SVM model parameters
+        let options = {
+            kernel : "linear",
+            maxiter : 10,
+            numpasses : 5
+        };
+        svm = new svmjs.SVM(options);
+        svm.fromJSON(orig_data["svm_params"]);
+        console.log(svm.toJSON());
         var selectedQuestions = [];
         let counter = 0;
-        for (var i = 0; i < orig_data.length; i++) {
-            counter = Math.min(orig_data[i].question.length, counter);
+        for (var i = 0; i < 3939; i++) {
+            counter = Math.max(orig_data[i]["question"].length, counter);
         }
-        console.log(counter)
+        console.log("counter", counter);
         while(selectedQuestions.length < 5) {
             var randomIndex = Math.floor(Math.random() * 3939);
             let skip_element = false;
@@ -101,22 +112,74 @@ $(document).ready(function() {
                 json_indices.push(randomIndex);
             }
         }
+
         // Use the selectedQuestions array as needed
         for (var i = 0; i < selectedQuestions.length; i++) {
             var questionNumber = i + 1;
             var imageId = selectedQuestions[i].image_id.toString().padStart(12, '0');
             var questionText = selectedQuestions[i].question;
+            //Do a prediction on the questions
+            var img = new Image(700, 400);
+            img.src = "./imgs/abstract_v002_train2015_" + imageId + ".png";
+            img.title = questionNumber;
             
             $("#question" + questionNumber + "-img").attr("src", "./imgs/abstract_v002_train2015_" + imageId + ".png");
-            $("#question" + questionNumber + " p").text((i + 1).toString() + ". " + questionText);
+            $("#question" + questionNumber + "q").text((i + 1).toString() + ". " + questionText);
+
+            img.onload = function() {
+                let canvas = document.createElement("canvas")
+                let context = canvas.getContext('2d');
+                context.drawImage(img, 0, 0);
+                var height = img.height;
+                var width = img.width;
+                var imgArr = context.getImageData(0, 0, width, height);
+                console.log(img.title);
+                console.log(imgArr);
+                var stringArr = [];
+                for (var i = 0; i < questionText.length; i++) {
+                    stringArr.push(questionText[i].charCodeAt(0));
+                }
+                for (var j = 0; j < 85 - questionText.length; j++) {
+                    stringArr.push(0);
+                }
+                let pruned_data = [];
+                for (var i = 0; i < imgArr.data.length; i++) {
+                    if (i % 32 == 0) {
+                        pruned_data.push(imgArr.data[i]);
+                    }
+                    if (i == 0) {
+                        console.log("Pruned_data[0]:", imgArr.data[i])
+                    }
+                }
+                let trainingArr = [...pruned_data, ...stringArr];
+                training_data.push(trainingArr);
+                let output = svm.predict([[...pruned_data, ...stringArr]]);
+                var output_val;
+                if (output == 1) {
+                    output_val = "Yes";
+                }
+                else {
+                    output_val = "No";
+                }
+                console.log("output_vals:", output_val);
+                machine_answers.push(output_val);
+                if (machine_answers.length == 5) {
+                    for (var i = 0; i < machine_answers.length; i++) {
+                        let number = i + 1;
+                        $("#question" + number + "mr").html("Machine Predicted Answer: " + machine_answers[i]);
+                    }
+                }
+            }
+            
+            
+            
+            
+            
         }
 
+        
 
-        svm = new svmjs.SVM();
-        data = [[0,0], [0,1], [1,0], [1,1]];
-        labels = [-1, 1, 1, -1];
-        svm.train(data, labels, { kernel: 'rbf', rbfsigma: 0.5 });
-        var json = svm.toJSON();
+
       }).catch((error) => {
         console.error(error);
       });
@@ -169,6 +232,22 @@ function submit_items(button) {
             return;
         }
     }
+    //Train the SVM
+    let trainingLabels = [];
+    answered_questions.forEach(val => {
+        if (val == "Yes") {
+            trainingLabels.push(1);
+        }
+        else {
+            trainingLabels.push(-1);
+        }
+    })
+    console.log(trainingLabels);
+    svm.train(training_data, trainingLabels);
+    let json_parameters = svm.toJSON();
+    //json_parameters['w'] = [...Array(35085)].map(_=>Math.random());
+    console.log(json_parameters);
+    orig_data['svm_params'] = json_parameters;
     for (var i = 0; i < 5; i++) {
         if ("worker_responses" in orig_data[json_indices[i]]) {
             orig_data[json_indices[i]]['worker_responses'].push(answered_questions[i]);
@@ -181,24 +260,8 @@ function submit_items(button) {
 
     retval = Math.floor(Math.random() * 1000);
 
-    // get(child(jsonRef1, '/userProfile')).then((snapshot) => {
-    //     var jsondataset;
-    //     if (snapshot.exists()) {
-    //         jsondataset = snapshot.val();
-    //         console.log(jsondataset);
-            
-    //         if ("worker_responses_list" in jsondataset) {
-    //             jsondataset["worker_responses_list"].push((retval, zip(question_list, answered_questions)));
-                  
-    //         }
-    //         else {
-    //             jsondataset["worker_responses_list"] = (retval, zip(question_list, answered_questions));
-    //         }
-    //         set(ref_database(getDatabase(), '/userProfile'), jsondataset);
-    //     }
-        
-    // })
 
+    
     if ("worker_responses_list" in orig_data) {
         orig_data["worker_responses_list"].push({[retval]: zip(question_list, answered_questions)});
           
