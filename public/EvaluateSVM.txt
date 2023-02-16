@@ -1,0 +1,166 @@
+//Evaluate the svm:
+        //Load in the second_iteration values
+        
+        let worker_responses_list = [1026, 2051, 2562, 6, 2058, 1042, 3098, 2590, 36, 1576, 2090, 2610, 3639, 2625, 2113, 3142, 3659, 3152, 2131, 2643, 3681, 2660, 103, 104, 2672, 1651, 1140, 633, 128, 2178, 2691, 3210, 2188, 2702, 3218, 659, 2201, 1692, 669, 2720, 2723, 176, 3248, 1719, 188, 3279, 729, 738, 3307, 1266, 1268, 3319, 1274, 3326, 772, 1285, 3334, 1287, 2311, 3341, 1807, 785, 3349, 2326, 2850, 1314, 1827, 312, 1337, 2364, 3399, 327, 1357, 333, 337, 338, 3926, 1893, 1898, 879, 881, 1919, 2947, 1924, 900, 2955, 2956, 1434, 3482, 412, 1962, 438, 440, 442, 1984, 3009, 1992, 1995, 977, 471, 3550, 1505, 2021, 1512, 2546, 2038, 3575, 506, 2555, 508];
+        
+        //Use svm.predict()
+        let ground_truth = [1,
+            1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            1,
+            -1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            -1,
+            1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            1,
+            -1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            1,
+            -1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            ]
+        let prediction_vals = [];
+        for (var i = 0; i < worker_responses_list.length; i++) {
+            var questionNumber = i + 1;
+            var imageId = orig_data[worker_responses_list[i]].image_id.toString().padStart(12, '0');
+            var questionText = orig_data[worker_responses_list[i]].question;
+            //Do a prediction on the questions
+            var img = new Image(700, 400);
+            img.src = "./imgs/abstract_v002_train2015_" + imageId + ".png";
+            img.title = questionNumber;
+
+            img.onload = function() {
+                let canvas = document.createElement("canvas")
+                let context = canvas.getContext('2d');
+                context.drawImage(img, 0, 0);
+                var height = img.height;
+                var width = img.width;
+                var imgArr = context.getImageData(0, 0, width, height);
+                console.log(img.title);
+                console.log(imgArr);
+                var stringArr = [];
+                for (var i = 0; i < questionText.length; i++) {
+                    stringArr.push(questionText[i].charCodeAt(0));
+                }
+                for (var j = 0; j < 85 - questionText.length; j++) {
+                    stringArr.push(0);
+                }
+                let pruned_data = [];
+                for (var i = 0; i < imgArr.data.length; i++) {
+                    if (i % 32 == 0) {
+                        pruned_data.push(imgArr.data[i]);
+                    }
+                }
+                let output = svm.predict([[...pruned_data, ...stringArr]]);
+                prediction_vals.push(output);
+                if (prediction_vals.length == worker_responses_list.length) {
+                    let equal = 0;
+                    let not_equal = 0;
+                    for (var i = 0; i < prediction_vals.length; i++) {
+                        if (prediction_vals[i] == ground_truth[i]) {
+                            equal++;
+                        }
+                        else {
+                            not_equal++;
+                        }
+                    }
+                    console.log('Prediction_results: ', (equal/(equal + not_equal)));
+                }
+            }
+        }
